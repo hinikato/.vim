@@ -1,0 +1,15 @@
+snippet myak_test
+	<?php
+	namespace ${1};
+	
+	use Myak\Test\TestCase;
+	${2:}
+	
+	class ${3:`substitute(Filename(), '^.', '\u&', '')`} extends TestCase
+	{
+		public function testOne()
+		{
+			${4}
+		}
+	}
+

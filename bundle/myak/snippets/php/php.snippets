@@ -1,0 +1,68 @@
+snippet ns
+	namespace ${1};
+snippet nsc
+	<?php
+	namespace ${1};
+	
+	class ${2:`substitute(Filename(), '^.', '\u&', '')`}
+	{
+		${3}
+	}
+snippet nsi
+	<?php
+	namespace ${1};
+	
+	interface ${2:`substitute(Filename(), '^.', '\u&', '')`}
+	{
+		public function ${3}();
+	}
+snippet c
+	class ${1:`substitute(Filename(), '^.', '\u&', '')`} ${2}
+	{
+		${3}
+	}
+snippet ac
+	abstract class ${1:`substitute(Filename(), '^.', '\u&', '')`} ${2}
+	{
+		${3}
+	}
+snippet i
+	interface ${1:`substitute(Filename(), '^.', '\u&', '')`} ${2}
+	{
+		${3}
+	}
+snippet t
+	trait ${1:`substitute(Filename(), '^.', '\u&', '')`}
+	{
+		${2}
+	}
+snippet f
+	function ${1}(${2})
+	{
+		${3}
+	}
+snippet foreach
+	foreach ($${1} as $${2}) {
+		${3}
+	}
+snippet for
+	for ($${2:i} = 0; $$2 < ${1:count}; $$2${3:++}) {
+		${4}
+	}
+snippet a
+	array(${1})
+snippet /*
+	/**
+	 * ${1}
+	 */
+snippet <?=
+	<?= ${1}; ?>
+snippet <?
+	<?php
+	${1}
+snippet sw
+	switch (${1}) {
+		case ${2}:
+			${3};
+			break;
+	}
