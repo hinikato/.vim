@@ -25,12 +25,6 @@ call pathogen#infect()
 " Строка должна идти до задания filetype.
 set langmenu=ru_ru
 
-" Show messages on English.
-" @TODO: Check v:lang variable, it can be set to: en_US.UTF-8
-lang mes en
-
-set helplang=ru,en
-
 let termencoding=&encoding
 
 " Order of detecting the <EOL>.
@@ -74,7 +68,7 @@ filetype plugin indent on
 
 syntax on
 if (!has('gui'))
-  colorscheme xoria256
+  "colorscheme xoria256
 else
   colorscheme myak
 endif
@@ -196,6 +190,7 @@ set sessionoptions+=unix,slash
 
 " change the mapleader from \ to ,
 let mapleader=","
+let maplocalleader=","
 
 " Edit .vimrc by <leader>e
 nmap <leader>e :tabnew $MYVIMRC<CR>
@@ -250,6 +245,9 @@ nnoremap o o<Space><BS>
 
 " Folds.
 nmap <Tab> zA
+
+" Autocompletion fix
+inoremap <expr> <C-[> pumvisible() ? "\<C-e><Esc>" : "\<Esc>"
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -339,13 +337,12 @@ endfunction
 
 "autocmd! BufWritePost .vimrc source %
 
-autocmd! BufNewFile,BufRead *.module,*.inc,*.test,*.install,*.profile
+autocmd! BufNewFile,BufRead *.module,*.inc,*.test,*.install,*.profile,*.phtml
   \ set filetype=php
 ""  \ set cindent
 
 autocmd! BufNewFile,BufRead *.ts set filetype=typescript
-autocmd! BufNewFile,BufRead *.twig call ApplyHtmlFtRules()
-"autocmd! BufNewFile,BufRead *.html,*htm call ApplyHtmlFtRules()
+autocmd! BufNewFile,BufRead *.html,*htm,*.twig,*.latte call ApplyHtmlFtRules()
 autocmd! BufNewFile,BufRead *.markdown,*.md,*.mdown,*.mkd,*.mkdn,*.txt set filetype=markdown
 
 autocmd! BufEnter * silent! lcd %:p:h
@@ -354,12 +351,17 @@ autocmd! BufEnter * silent! lcd %:p:h
 autocmd! WinEnter * call s:CloseIfOnlyNerdTreeLeft()
 autocmd! ShellCmdPost,ShellFilterPost * :execute "normal \<S-R>"
 
+" We need to disable the 'acp' for Python due problems with automatically exit.
+autocmd! Filetype python AcpDisable
+
 autocmd! Filetype css,php,javascript,php,ruby,html,xml,cpp,markdown call ApplyCommonCodingRules()
 autocmd! Filetype vim set shiftwidth=2 tabstop=2
 
 fun! ApplyHtmlFtRules()
-  "set filetype=html
-  "runtime vimfiles/bundle/xmledit/ftplugin/xml.vim
+  set filetype=xhtml
+"  autocmd FileType xml set omnifunc=xmlcomplete#CompleteTags noci
+"  autocmd FileType html set omnifunc=htmlcomplete#CompleteTags noci
+"  runtime vimfiles/bundle/xmledit/ftplugin/xml.vim
 endfunction
 
 fun! ApplyCommonCodingRules()

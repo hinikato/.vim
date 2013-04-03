@@ -139,6 +139,9 @@ fun myak#init_myvim()
 endf
 
 fun myak#pre_it(line1, line2)
+  let old_ft=&ft
+  setlocal ft=
+
   "let text = myak#get_visual()
   let savepos = getpos('.')
   execute a:line1 . ',' . a:line2 . "s/&/\&amp;/ge"
@@ -154,6 +157,9 @@ fun myak#pre_it(line1, line2)
 
   call histdel('search', -1)
   call setpos('.', savepos)
+
+  " &l:option means setlocal
+  let &l:ft=old_ft
 endf
 
 call myak#init_myvim()
