@@ -18,6 +18,17 @@ call pathogen#infect()
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Functions (called from other sections of .vimrc)
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+fun SetLineWrapWidth(width)
+  set wrap
+  let &textwidth=a:width
+  set cc=+1  " highlight column after 'textwidth'
+endf
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Language
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
@@ -56,10 +67,6 @@ set confirm
 " Scrolling options
 "set scrolljump=5
 "set scrolloff=3
-
-" :help :filetype-overview
-filetype indent off
-filetype plugin indent on
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -151,6 +158,10 @@ set hlsearch
 " Indentation
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
+" :help :filetype-overview
+filetype indent off
+filetype plugin indent on
+
 " A tab is 4 spaces
 set tabstop=4
 " When hitting <BS>, pretend like a tab is removed, even if spaces
@@ -175,6 +186,8 @@ set nosmartindent
 set nocindent
 
 set list listchars=tab:»»,trail:·
+
+call SetLineWrapWidth(120)
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""

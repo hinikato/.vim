@@ -4,7 +4,7 @@
 ### 1.1. Linux
 
 ```
-    git clone https://github.com/hinikato/myvim.git ~/.vim 
+    git clone https://github.com/hinikato/myvim.git ~/.vim
     cd ~/.vim && chmod +x *.sh && source vim-init.sh
 ```
 
@@ -39,17 +39,140 @@ If you have troubles with *.rb scripts in gVim on Windows, you can try the gVim 
 
 ## 2. Keys
 
-Ctrl+k (Insert and Normal mode) - move line up (thanks to ?, sorry I don't remember of your nick)
-Ctrl+j (Insert and Normal mode) - move line down (thanks to ?, sorry I don't remember of your nick)
-Ctrl+Enter - paste selected text to the command line.
-Ctrl+Tab - next tab.
-Ctrl+Shift+Tab - previous tab.
-Ctrl+s - save current file.
-Alt+h - move cursor to the left window.
-Alt+k - move cursor to the above window.
-Alt+j - move cursor to the below window.
-Alt+l - move cursor to the right window.
-F3 - save and strip trailing spaces at the end of lines.
+<table>
+    <tr>
+        <th>
+            Keys
+        </th>
+        <th>
+            Description
+        </th>
+        <th>
+            Mode
+        </th>
+    </tr>
+    <tr>
+        <td>
+            Ctrl+k
+        </td>
+        <td>
+            Move line up (author ?)
+        </td>
+        <td>
+            Insert, Normal
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Ctrl+j
+        </td>
+        <td>
+            Move line down (author ?)
+        </td>
+        <td>
+            Insert, Normal
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Ctrl+s
+        </td>
+        <td>
+            Save current file
+        </td>
+        <td>
+            Insert, Normal
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Alt+h
+        </td>
+        <td>
+            Move cursor to the left window
+        </td>
+        <td>
+            Normal
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Alt+j
+        </td>
+        <td>
+            Move cursor to the below window
+        </td>
+        <td>
+            Normal
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Alt+k
+        </td>
+        <td>
+            Move cursor to the above window
+        </td>
+        <td>
+            Normal
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Alt+l
+        </td>
+        <td>
+            Move cursor to the right window.
+        </td>
+        <td>
+            Normal
+        </td>
+    </tr>
+    <tr>
+        <td>
+            F3
+        </td>
+        <td>
+            Save file and strip trailing spaces at the end of lines.
+        </td>
+        <td>
+            Normal
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Ctrl+Enter
+        </td>
+        <td>
+            Paste selected text to the command line
+        </td>
+        <td>
+            Normal
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Ctrl+Tab
+        </td>
+        <td>
+            Next tab
+        </td>
+        <td>
+            Insert, Normal
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Ctrl+Tab
+        </td>
+        <td>
+            Previous tab
+        </td>
+        <td>
+            Insert, Normal
+        </td>
+    </tr>
+</table>
 
 
 ## 3. Language switcher fix (Windows only)
