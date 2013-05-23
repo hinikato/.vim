@@ -1,4 +1,5 @@
-## 1. Installation
+1. Installation
+===============
 
 
 ### 1.1. Linux
@@ -33,11 +34,10 @@ This command should be executed in Vim.
     cd $VIM/vimfiles
     git submodule update --init
 ```
-------------------------------------------------------
-If you have troubles with *.rb scripts in gVim on Windows, you can try the gVim from the http://wyw.dcweb.cn/.
 
 
-## 2. Keys
+2. Keys
+=======
 
 <table>
     <tr>
@@ -175,7 +175,8 @@ If you have troubles with *.rb scripts in gVim on Windows, you can try the gVim 
 </table>
 
 
-## 3. Language switcher fix (Windows only)
+3. Language switcher fix (Windows only)
+=======================================
 
 In the bundle/myak/myak.vim there is the following block of code:
 

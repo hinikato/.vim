@@ -22,6 +22,3 @@
 [submodule "bundle/json"]
 	path = bundle/json
 	url = https://github.com/vim-scripts/vim-json-bundle.git
-[submodule "bundle/dart"]
-	path = bundle/dart
-	url = https://github.com/bartekd/vim-dart.git

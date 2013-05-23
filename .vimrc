@@ -162,6 +162,8 @@ set hlsearch
 filetype indent off
 filetype plugin indent on
 
+call SetLineWrapWidth(120)
+
 " A tab is 4 spaces
 set tabstop=4
 " When hitting <BS>, pretend like a tab is removed, even if spaces
@@ -186,8 +188,6 @@ set nosmartindent
 set nocindent
 
 set list listchars=tab:»»,trail:·
-
-call SetLineWrapWidth(120)
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
