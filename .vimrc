@@ -24,7 +24,11 @@ call pathogen#infect()
 fun SetLineWrapWidth(width)
   set wrap
   let &textwidth=a:width
-  set cc=+1  " highlight column after 'textwidth'
+  if exists('+colorcolumn')
+    set colorcolumn=+1  " highlight next column after 'textwidth'
+"  else
+"au BufWinEnter * let w:m2=matchadd('ErrorMsg', '\%>80v.\+', -1)
+  endif
 endf
 
 
@@ -75,7 +79,7 @@ set confirm
 
 syntax on
 if (!has('gui'))
-  "colorscheme xoria256
+  colorscheme xoria256
 else
   colorscheme myak
 endif

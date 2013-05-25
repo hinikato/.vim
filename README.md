@@ -5,7 +5,7 @@
 ### 1.1. Linux
 
 ```
-    git clone https://github.com/hinikato/myvim.git ~/.vim
+    git clone https://github.com/hinikato/.vim.git ~/.vim
     cd ~/.vim && chmod +x *.sh && source vim-init.sh
 ```
 
@@ -15,7 +15,7 @@
 https://github.com/downloads/oneclick/rubyinstaller/DevKit-tdm-32-4.5.2-20111229-1559-sfx.exe):
 
 ```
-    git clone https://github.com/hinikato/myvim.git $VIM/vimfiles
+    git clone https://github.com/hinikato/.vim.git $VIM/vimfiles
     cp $VIM/vimfiles/.vimrc $VIM
     cp $VIM/vimfiles/.gvimrc $VIM
 ```
