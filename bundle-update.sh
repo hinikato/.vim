@@ -1,5 +1,6 @@
 #!/bin/bash
 # Allows iterate over directories.
+# @TODO: Change this script
 vim_dir_path=~/.vim
 input_dir_path=$vim_dir_path/bundle
 find $input_dir_path -maxdepth 1 -type d -name "*" | while read submodule_dir_path ; do

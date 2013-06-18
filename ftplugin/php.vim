@@ -65,6 +65,6 @@ endfunction
 " Run current PHPUnit test with F4.
 map <silent> <F4> <Esc>:call PHPUnit(0)<CR>
 
-" Run PHP with F5
+" Run php with F5
 map <silent> <F5> <Esc>:!php %<CR>
 map! <silent> <F5> <Esc>:!php %<CR>

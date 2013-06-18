@@ -25,3 +25,9 @@
 [submodule "bundle/dart"]
 	path = bundle/dart
 	url = https://github.com/dart-lang/dart-vim-plugin.git
+[submodule "bundle/flake8"]
+	path = bundle/flake8
+	url = https://github.com/andviro/flake8-vim.git
+[submodule "bundle/unite"]
+	path = bundle/unite
+	url = https://github.com/Shougo/unite.vim.git

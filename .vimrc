@@ -358,9 +358,11 @@ autocmd! BufNewFile,BufRead *.module,*.inc,*.test,*.install,*.profile,*.phtml
   \ set filetype=php
 ""  \ set cindent
 
+" Associate extensions with .syntax file.
 autocmd! BufNewFile,BufRead *.ts set filetype=typescript
 autocmd! BufNewFile,BufRead *.html,*htm,*.twig,*.latte call ApplyHtmlFtRules()
 autocmd! BufNewFile,BufRead *.markdown,*.md,*.mdown,*.mkd,*.mkdn,*.txt set filetype=markdown
+autocmd! BufNewFile,BufRead *.stg set filetype=stg
 
 autocmd! BufEnter * silent! lcd %:p:h
 

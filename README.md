@@ -56,7 +56,7 @@ This command should be executed in Vim.
             Ctrl+k
         </td>
         <td>
-            Move line up (author ?)
+            Move line up (author Skip)
         </td>
         <td>
             Insert, Normal
@@ -67,7 +67,7 @@ This command should be executed in Vim.
             Ctrl+j
         </td>
         <td>
-            Move line down (author ?)
+            Move line down (author Skip)
         </td>
         <td>
             Insert, Normal
@@ -141,10 +141,21 @@ This command should be executed in Vim.
     </tr>
     <tr>
         <td>
+            F5
+        </td>
+        <td>
+            Run the python, php or dart with current file as argument.
+        </td>
+        <td>
+            Insert, Normal, Command-line
+        </td>
+    </tr>
+    <tr>
+        <td>
             Ctrl+Enter
         </td>
         <td>
-            Paste selected text to the command line
+            Paste of the selected text to the command line
         </td>
         <td>
             Normal
