@@ -157,9 +157,7 @@ This command should be executed in Vim.
         <td>
             Search for bootstrap.php file in the current directory and if not found in subdirectories recursively and
             run the
-```
-phpunit --bootstrap bootstrap.php current_file.php
-```
+<pre><code>phpunit --bootstrap bootstrap.php current_file.php</code></pre>
             command.
         </td>
         <td>
