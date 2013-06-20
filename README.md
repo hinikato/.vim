@@ -130,10 +130,37 @@ This command should be executed in Vim.
     </tr>
     <tr>
         <td>
+            F2
+        </td>
+        <td>
+            Show NERDTree explorer in the left window.
+        </td>
+        <td>
+            Normal
+        </td>
+    </tr>
+    <tr>
+        <td>
             F3
         </td>
         <td>
             Save file and strip trailing spaces at the end of lines.
+        </td>
+        <td>
+            Normal
+        </td>
+    </tr>
+    <tr>
+        <td>
+            F4
+        </td>
+        <td>
+            Search for bootstrap.php file in the current directory and if not found in subdirectories recursively and
+            run the
+```
+phpunit --bootstrap bootstrap.php current_file.php
+```
+            command.
         </td>
         <td>
             Normal
@@ -174,7 +201,7 @@ This command should be executed in Vim.
     </tr>
     <tr>
         <td>
-            Ctrl+Tab
+            Ctrl+Shift+Tab
         </td>
         <td>
             Previous tab

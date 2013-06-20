@@ -284,16 +284,19 @@ map <F12> :emenu Encoding.<Tab>
 " Commands and plugins setup
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-" preview
-let PreviewBrowsers = 'firefox,opera,chromium-browser,google-chrome,safari,epiphany'
-
+""""""""""
 " matchit
+""""""""""
 runtime macros/matchit.vim
 
+""""""""
 " netrw
+""""""""
 let g:netrw_keepdir=0
 
-" zencoding-vim
+""""""""""""
+" zencoding
+""""""""""""
 let g:user_zen_settings = {
 \  'html' : {
 \    'indentation' : '  '
@@ -306,7 +309,9 @@ if exists('g:use_zen_complete_tag') && g:use_zen_complete_tag
   setlocal completefunc=zencoding#CompleteTag
 endif
 
+"""""""""""
 " nerdtree
+"""""""""""
 function! s:CloseIfOnlyNerdTreeLeft()
   if exists("t:NERDTreeBufName")
     if bufwinnr(t:NERDTreeBufName) != -1
@@ -326,8 +331,125 @@ let NERDTreeChDirMode = 2
 let g:NERDTreeMapOpenVSplit = "v"
 let g:NERDTreeMapOpenSplit = "s"
 
+"""""""""""""""
 " indentguides
+"""""""""""""""
 let g:indent_guides_enable_on_vim_startup=0
+
+""""""""
+" unite
+""""""""
+" The prefix key.
+nnoremap [unite] <Nop>
+nmap f [unite]
+
+nnoremap <silent> [unite]c :<C-u>UniteWithCurrentDir
+\ -buffer-name=files buffer file_mru bookmark file<CR>
+nnoremap <silent> [unite]b :<C-u>UniteWithBufferDir
+\ -buffer-name=files -prompt=%\ buffer file_mru bookmark file<CR>
+nnoremap <silent> [unite]r :<C-u>Unite
+\ -buffer-name=register register<CR>
+nnoremap <silent> [unite]o :<C-u>Unite outline<CR>
+nnoremap <silent> [unite]f
+\ :<C-u>Unite -buffer-name=resume resume<CR>
+nnoremap <silent> [unite]d
+\ :<C-u>Unite -buffer-name=files -default-action=lcd directory_mru<CR>
+nnoremap <silent> [unite]ma
+\ :<C-u>Unite mapping<CR>
+nnoremap <silent> [unite]me
+\ :<C-u>Unite output:message<CR>
+nnoremap [unite]f :<C-u>Unite source<CR>
+
+nnoremap <silent> [unite]s
+\ :<C-u>Unite -buffer-name=files -no-split
+\ jump_point file_point buffer_tab
+\ file_rec:! file file/new file_mru<CR>
+
+" Start insert.
+"let g:unite_enable_start_insert = 1
+"let g:unite_enable_short_source_names = 1
+
+" To track long mru history.
+"let g:unite_source_file_mru_long_limit = 3000
+"let g:unite_source_directory_mru_long_limit = 3000
+
+" Like ctrlp.vim settings.
+"let g:unite_enable_start_insert = 1
+"let g:unite_winheight = 10
+"let g:unite_split_rule = 'botright'
+
+" Prompt choices.
+"let g:unite_prompt = '❫ '
+"let g:unite_prompt = '» '
+
+autocmd FileType unite call s:unite_my_settings()
+function! s:unite_my_settings()"{{{
+" Overwrite settings.
+
+nmap <buffer> <ESC> <Plug>(unite_exit)
+imap <buffer> jj <Plug>(unite_insert_leave)
+"imap <buffer> <C-w> <Plug>(unite_delete_backward_path)
+
+imap <buffer><expr> j unite#smart_map('j', '')
+imap <buffer> <TAB> <Plug>(unite_select_next_line)
+imap <buffer> <C-w> <Plug>(unite_delete_backward_path)
+imap <buffer> ' <Plug>(unite_quick_match_default_action)
+nmap <buffer> ' <Plug>(unite_quick_match_default_action)
+imap <buffer><expr> x
+\ unite#smart_map('x', "\<Plug>(unite_quick_match_choose_action)")
+nmap <buffer> x <Plug>(unite_quick_match_choose_action)
+nmap <buffer> <C-z> <Plug>(unite_toggle_transpose_window)
+imap <buffer> <C-z> <Plug>(unite_toggle_transpose_window)
+imap <buffer> <C-y> <Plug>(unite_narrowing_path)
+nmap <buffer> <C-y> <Plug>(unite_narrowing_path)
+nmap <buffer> <C-j> <Plug>(unite_toggle_auto_preview)
+nmap <buffer> <C-r> <Plug>(unite_narrowing_input_history)
+imap <buffer> <C-r> <Plug>(unite_narrowing_input_history)
+nnoremap <silent><buffer><expr> l
+\ unite#smart_map('l', unite#do_action('default'))
+
+let unite = unite#get_current_unite()
+if unite.buffer_name =~# '^search'
+nnoremap <silent><buffer><expr> r unite#do_action('replace')
+else
+nnoremap <silent><buffer><expr> r unite#do_action('rename')
+endif
+
+nnoremap <silent><buffer><expr> cd unite#do_action('lcd')
+nnoremap <buffer><expr> S unite#mappings#set_current_filters(
+\ empty(unite#mappings#get_current_filters()) ? ['sorter_reverse'] : [])
+endfunction"}}}
+
+let g:unite_source_file_mru_limit = 200
+let g:unite_cursor_line_highlight = 'TabLineSel'
+let g:unite_abbr_highlight = 'TabLine'
+
+" For optimize.
+let g:unite_source_file_mru_filename_format = ''
+
+if executable('jvgrep')
+" For jvgrep.
+let g:unite_source_grep_command = 'jvgrep'
+let g:unite_source_grep_default_opts = '--exclude ''\.(git|svn|hg|bzr)'''
+let g:unite_source_grep_recursive_opt = '-R'
+endif
+
+" For ack.
+if executable('ack-grep')
+" let g:unite_source_grep_command = 'ack-grep'
+" let g:unite_source_grep_default_opts = '--no-heading --no-color -a'
+" let g:unite_source_grep_recursive_opt = ''
+endif
+
+
+
+
+
+
+
+
+
+
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
