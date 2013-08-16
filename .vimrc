@@ -21,15 +21,66 @@ call pathogen#infect()
 " Functions (called from other sections of .vimrc)
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-fun SetLineWrapWidth(width)
-  set wrap
+function SetLineWrapWidth(width)
+  "set wrap
   let &textwidth=a:width
   if exists('+colorcolumn')
     set colorcolumn=+1  " highlight next column after 'textwidth'
 "  else
 "au BufWinEnter * let w:m2=matchadd('ErrorMsg', '\%>80v.\+', -1)
   endif
-endf
+endfunction
+
+function SetIndentWidth(numberOfSpaces)
+  " A tab is 4 spaces
+  let &tabstop=a:numberOfSpaces
+  " When hitting <BS>, pretend like a tab is removed, even if spaces
+  let &softtabstop=a:numberOfSpaces
+  " Number of spaces to use for autoindenting
+  let &shiftwidth=a:numberOfSpaces
+endfunction
+
+function! s:SetupSnippets()
+  if g:is_win
+    let snippets_dir_path = $VIM . "/vimfiles/bundle/myak/snippets"
+  else
+    let snippets_dir_path = "~/.vim/bundle/myak/snippets"
+  endif
+  let file_paths = split(globpath(snippets_dir_path, "**/*.snippets", 1), "\n")
+  for file_path in file_paths
+    let ft = myak#chunk_of_path(file_path, -2)
+    call ExtractSnipsFile(file_path, ft)
+  endfor
+endfunction
+
+function! s:CloseIfOnlyNerdTreeLeft()
+  if exists("t:NERDTreeBufName")
+    if bufwinnr(t:NERDTreeBufName) != -1
+      if winnr("$") == 1
+        q
+      endif
+    endif
+  endif
+endfunction
+
+function! s:ApplyHtmlFtRules()
+  set filetype=xhtml
+"  autocmd FileType xml set omnifunc=xmlcomplete#CompleteTags noci
+"  autocmd FileType html set omnifunc=htmlcomplete#CompleteTags noci
+"  runtime vimfiles/bundle/xmledit/ftplugin/xml.vim
+endfunction
+
+function! s:ApplyCommonCodingRules()
+  if (has('gui'))
+    call indent_guides#enable()
+    let g:indent_guides_auto_colors = 0
+    hi IndentGuidesEven guifg=yellow
+    hi IndentGuidesOdd guifg=yellow
+  else
+    call indent_guides#disable()
+  endif
+  "highlight phpRegion guibg=yellow guifg=yellow
+endfunction
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -127,12 +178,11 @@ set showcmd
 
 set laststatus=2
 " %-0{minwid}.{maxwid}{item}
-set statusline+=Line:\ %l/%L\ (%2.3p%%)
-set statusline+=,\ Column:\ %c
-"set statusline+=%=%F
+set statusline+=Line:\ %l/%L\ (%1.3p%%)
+set statusline+=,\ Col:\ %v\ (%c)
 set statusline+=%=\ File:\ %t\ (%n)
 set statusline+=,\ Format:\ %{&ff}
-set statusline+=,\ Encoding:\ %{&fileencoding}
+set statusline+=,\ Enc:\ %{&fileencoding}
 set statusline+=,\ Type:\ %{strlen(&ft)?&ft:'none'}\ %m%r%h%{((exists(\"+bomb\")\ &&\ &bomb)?'[BOM]':'')}
 """        set statusline+=%< " where truncate if line too long
 """set statusline+=%{SyntaxItem()}              " syntax highlight group under cursor
@@ -167,15 +217,10 @@ filetype indent off
 filetype plugin indent on
 
 call SetLineWrapWidth(120)
+call SetIndentWidth(4)
 
-" A tab is 4 spaces
-set tabstop=4
-" When hitting <BS>, pretend like a tab is removed, even if spaces
-set softtabstop=4
 " Expand tabs by default (overloadable per file type later)
 set expandtab
-" Number of spaces to use for autoindenting
-set shiftwidth=4
 " Use multiple of shiftwidth when indenting with '<' and '>'
 set shiftround
 " Always set autoindenting on
@@ -263,21 +308,35 @@ nnoremap o o<Space><BS>
 " Folds.
 nmap <Tab> zA
 
-" Autocompletion fix
+" Autocompletion fix, complete with Tab, Escape with C-[
 inoremap <expr> <C-[> pumvisible() ? "\<C-e><Esc>" : "\<Esc>"
+"inoremap <expr> <Tab> <C-R>=pumvisible() ? "\<lt>C-N>" : "\<lt>Tab>"<CR>
+"inoremap <expr> <CR> <C-R>=pumvisible() ? "\<lt>ESC>o" : "\<lt>CR>"<CR>
+
+" Menu
+map <F9> :emenu Encoding.<Tab>
+map <F10> :emenu File\ Format.<Tab>
+
+" nerdtree
+map <F2> :NERDTreeToggle<CR>
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Menu
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-set wcm=<Tab>
-menu Encoding.koi8-r  :e ++enc=koi8-r<CR>
-menu Encoding.cp1251  :e ++enc=cp1251<CR>
-menu Encoding.cp866   :e ++enc=cp866<CR>
-menu Encoding.ucs-2le :e ++enc=ucs-2le<CR>
-menu Encoding.utf-8   :e ++enc=utf-8<CR>
-map <F12> :emenu Encoding.<Tab>
+" Key to switch between menu items.
+set wildcharm=<Tab>
+
+menu Encoding.koi8-r                :e ++enc=koi8-r<CR>
+menu Encoding.cp1251                :e ++enc=cp1251<CR>
+menu Encoding.cp866                 :e ++enc=cp866<CR>
+menu Encoding.ucs-2le               :e ++enc=ucs-2le<CR>
+menu Encoding.utf-8                 :e ++enc=utf-8<CR>
+
+menu File\ Format.dos\ (hide\ CRLF) :e ++ff=dos<CR>
+menu File\ Format.unix\ (hide\ LF)  :e ++ff=unix<CR>
+menu File\ Format.mac\ (hide\ CR)   :e ++ff=mac<CR>
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -303,7 +362,7 @@ let g:user_zen_settings = {
 \  },
 \}
 let g:use_zen_complete_tag=1
-let g:user_zen_expandabbr_key = '<c-y>'
+let g:user_zen_expandabbr_key = '<c-l>'
 
 if exists('g:use_zen_complete_tag') && g:use_zen_complete_tag
   setlocal completefunc=zencoding#CompleteTag
@@ -312,16 +371,6 @@ endif
 """""""""""
 " nerdtree
 """""""""""
-function! s:CloseIfOnlyNerdTreeLeft()
-  if exists("t:NERDTreeBufName")
-    if bufwinnr(t:NERDTreeBufName) != -1
-      if winnr("$") == 1
-        q
-      endif
-    endif
-  endif
-endfunction
-map <F2> :NERDTreeToggle<CR>
 let NERDTreeWinSize = 40
 let NERDTreeShowBookmarks = 1
 let NERDTreeShowHidden = 1
@@ -340,30 +389,30 @@ let g:indent_guides_enable_on_vim_startup=0
 " unite
 """"""""
 " The prefix key.
-nnoremap [unite] <Nop>
-nmap f [unite]
-
-nnoremap <silent> [unite]c :<C-u>UniteWithCurrentDir
-\ -buffer-name=files buffer file_mru bookmark file<CR>
-nnoremap <silent> [unite]b :<C-u>UniteWithBufferDir
-\ -buffer-name=files -prompt=%\ buffer file_mru bookmark file<CR>
-nnoremap <silent> [unite]r :<C-u>Unite
-\ -buffer-name=register register<CR>
-nnoremap <silent> [unite]o :<C-u>Unite outline<CR>
-nnoremap <silent> [unite]f
-\ :<C-u>Unite -buffer-name=resume resume<CR>
-nnoremap <silent> [unite]d
-\ :<C-u>Unite -buffer-name=files -default-action=lcd directory_mru<CR>
-nnoremap <silent> [unite]ma
-\ :<C-u>Unite mapping<CR>
-nnoremap <silent> [unite]me
-\ :<C-u>Unite output:message<CR>
-nnoremap [unite]f :<C-u>Unite source<CR>
-
-nnoremap <silent> [unite]s
-\ :<C-u>Unite -buffer-name=files -no-split
-\ jump_point file_point buffer_tab
-\ file_rec:! file file/new file_mru<CR>
+"nnoremap [unite] <Nop>
+"nmap f [unite]
+"
+"nnoremap <silent> [unite]c :<C-u>UniteWithCurrentDir
+"\ -buffer-name=files buffer file_mru bookmark file<CR>
+"nnoremap <silent> [unite]b :<C-u>UniteWithBufferDir
+"\ -buffer-name=files -prompt=%\ buffer file_mru bookmark file<CR>
+"nnoremap <silent> [unite]r :<C-u>Unite
+"\ -buffer-name=register register<CR>
+"nnoremap <silent> [unite]o :<C-u>Unite outline<CR>
+"nnoremap <silent> [unite]f
+"\ :<C-u>Unite -buffer-name=resume resume<CR>
+"nnoremap <silent> [unite]d
+"\ :<C-u>Unite -buffer-name=files -default-action=lcd directory_mru<CR>
+"nnoremap <silent> [unite]ma
+"\ :<C-u>Unite mapping<CR>
+"nnoremap <silent> [unite]me
+"\ :<C-u>Unite output:message<CR>
+"nnoremap [unite]f :<C-u>Unite source<CR>
+"
+"nnoremap <silent> [unite]s
+"\ :<C-u>Unite -buffer-name=files -no-split
+"\ jump_point file_point buffer_tab
+"\ file_rec:! file file/new file_mru<CR>
 
 " Start insert.
 "let g:unite_enable_start_insert = 1
@@ -382,92 +431,64 @@ nnoremap <silent> [unite]s
 "let g:unite_prompt = '❫ '
 "let g:unite_prompt = '» '
 
-autocmd FileType unite call s:unite_my_settings()
-function! s:unite_my_settings()"{{{
-" Overwrite settings.
-
-nmap <buffer> <ESC> <Plug>(unite_exit)
-imap <buffer> jj <Plug>(unite_insert_leave)
-"imap <buffer> <C-w> <Plug>(unite_delete_backward_path)
-
-imap <buffer><expr> j unite#smart_map('j', '')
-imap <buffer> <TAB> <Plug>(unite_select_next_line)
-imap <buffer> <C-w> <Plug>(unite_delete_backward_path)
-imap <buffer> ' <Plug>(unite_quick_match_default_action)
-nmap <buffer> ' <Plug>(unite_quick_match_default_action)
-imap <buffer><expr> x
-\ unite#smart_map('x', "\<Plug>(unite_quick_match_choose_action)")
-nmap <buffer> x <Plug>(unite_quick_match_choose_action)
-nmap <buffer> <C-z> <Plug>(unite_toggle_transpose_window)
-imap <buffer> <C-z> <Plug>(unite_toggle_transpose_window)
-imap <buffer> <C-y> <Plug>(unite_narrowing_path)
-nmap <buffer> <C-y> <Plug>(unite_narrowing_path)
-nmap <buffer> <C-j> <Plug>(unite_toggle_auto_preview)
-nmap <buffer> <C-r> <Plug>(unite_narrowing_input_history)
-imap <buffer> <C-r> <Plug>(unite_narrowing_input_history)
-nnoremap <silent><buffer><expr> l
-\ unite#smart_map('l', unite#do_action('default'))
-
-let unite = unite#get_current_unite()
-if unite.buffer_name =~# '^search'
-nnoremap <silent><buffer><expr> r unite#do_action('replace')
-else
-nnoremap <silent><buffer><expr> r unite#do_action('rename')
-endif
-
-nnoremap <silent><buffer><expr> cd unite#do_action('lcd')
-nnoremap <buffer><expr> S unite#mappings#set_current_filters(
-\ empty(unite#mappings#get_current_filters()) ? ['sorter_reverse'] : [])
-endfunction"}}}
-
-let g:unite_source_file_mru_limit = 200
-let g:unite_cursor_line_highlight = 'TabLineSel'
-let g:unite_abbr_highlight = 'TabLine'
-
-" For optimize.
-let g:unite_source_file_mru_filename_format = ''
-
-if executable('jvgrep')
-" For jvgrep.
-let g:unite_source_grep_command = 'jvgrep'
-let g:unite_source_grep_default_opts = '--exclude ''\.(git|svn|hg|bzr)'''
-let g:unite_source_grep_recursive_opt = '-R'
-endif
-
-" For ack.
-if executable('ack-grep')
-" let g:unite_source_grep_command = 'ack-grep'
-" let g:unite_source_grep_default_opts = '--no-heading --no-color -a'
-" let g:unite_source_grep_recursive_opt = ''
-endif
-
-
-
-
-
-
-
-
-
-
-
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" snippets
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
-function! s:SetupSnippets()
-  if g:is_win
-    let snippets_dir_path = $VIM . "/vimfiles/bundle/myak/snippets"
-  else
-    let snippets_dir_path = "~/.vim/bundle/myak/snippets"
-  endif
-  let file_paths = split(globpath(snippets_dir_path, "**/*.snippets", 1), "\n")
-  for file_path in file_paths
-    let ft = myak#chunk_of_path(file_path, -2)
-    call ExtractSnipsFile(file_path, ft)
-  endfor
-endfunction
+" autocmd FileType unite call s:unite_my_settings()
+" function! s:unite_my_settings()"{{{
+" " Overwrite settings.
+" 
+" nmap <buffer> <ESC> <Plug>(unite_exit)
+" imap <buffer> jj <Plug>(unite_insert_leave)
+" "imap <buffer> <C-w> <Plug>(unite_delete_backward_path)
+" 
+" imap <buffer><expr> j unite#smart_map('j', '')
+" imap <buffer> <TAB> <Plug>(unite_select_next_line)
+" imap <buffer> <C-w> <Plug>(unite_delete_backward_path)
+" imap <buffer> ' <Plug>(unite_quick_match_default_action)
+" nmap <buffer> ' <Plug>(unite_quick_match_default_action)
+" imap <buffer><expr> x
+" \ unite#smart_map('x', "\<Plug>(unite_quick_match_choose_action)")
+" nmap <buffer> x <Plug>(unite_quick_match_choose_action)
+" nmap <buffer> <C-z> <Plug>(unite_toggle_transpose_window)
+" imap <buffer> <C-z> <Plug>(unite_toggle_transpose_window)
+" imap <buffer> <C-y> <Plug>(unite_narrowing_path)
+" nmap <buffer> <C-y> <Plug>(unite_narrowing_path)
+" nmap <buffer> <C-j> <Plug>(unite_toggle_auto_preview)
+" nmap <buffer> <C-r> <Plug>(unite_narrowing_input_history)
+" imap <buffer> <C-r> <Plug>(unite_narrowing_input_history)
+" nnoremap <silent><buffer><expr> l
+" \ unite#smart_map('l', unite#do_action('default'))
+" 
+" let unite = unite#get_current_unite()
+" if unite.buffer_name =~# '^search'
+" nnoremap <silent><buffer><expr> r unite#do_action('replace')
+" else
+" nnoremap <silent><buffer><expr> r unite#do_action('rename')
+" endif
+" 
+" nnoremap <silent><buffer><expr> cd unite#do_action('lcd')
+" nnoremap <buffer><expr> S unite#mappings#set_current_filters(
+" \ empty(unite#mappings#get_current_filters()) ? ['sorter_reverse'] : [])
+" endfunction"}}}
+" 
+" let g:unite_source_file_mru_limit = 200
+" let g:unite_cursor_line_highlight = 'TabLineSel'
+" let g:unite_abbr_highlight = 'TabLine'
+" 
+" " For optimize.
+" let g:unite_source_file_mru_filename_format = ''
+" 
+" if executable('jvgrep')
+" " For jvgrep.
+" let g:unite_source_grep_command = 'jvgrep'
+" let g:unite_source_grep_default_opts = '--exclude ''\.(git|svn|hg|bzr)'''
+" let g:unite_source_grep_recursive_opt = '-R'
+" endif
+" 
+" " For ack.
+" if executable('ack-grep')
+" " let g:unite_source_grep_command = 'ack-grep'
+" " let g:unite_source_grep_default_opts = '--no-heading --no-color -a'
+" " let g:unite_source_grep_recursive_opt = ''
+" endif
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -482,7 +503,7 @@ autocmd! BufNewFile,BufRead *.module,*.inc,*.test,*.install,*.profile,*.phtml
 
 " Associate extensions with .syntax file.
 autocmd! BufNewFile,BufRead *.ts set filetype=typescript
-autocmd! BufNewFile,BufRead *.html,*htm,*.twig,*.latte call ApplyHtmlFtRules()
+autocmd! BufNewFile,BufRead *.html,*htm,*.twig,*.latte call s:ApplyHtmlFtRules()
 autocmd! BufNewFile,BufRead *.markdown,*.md,*.mdown,*.mkd,*.mkdn,*.txt set filetype=markdown
 autocmd! BufNewFile,BufRead *.stg set filetype=stg
 
@@ -492,29 +513,9 @@ autocmd! BufEnter * silent! lcd %:p:h
 autocmd! WinEnter * call s:CloseIfOnlyNerdTreeLeft()
 autocmd! ShellCmdPost,ShellFilterPost * :execute "normal \<S-R>"
 
-" We need to disable the 'acp' for Python due problems with automatically exit.
+" Disable the 'acp' for Python due problems with automatically exit.
 autocmd! Filetype python AcpDisable
-
-autocmd! Filetype css,php,javascript,php,ruby,html,xml,cpp,markdown call ApplyCommonCodingRules()
+autocmd! Filetype css,php,javascript,php,ruby,html,xml,cpp,markdown call s:ApplyCommonCodingRules()
 autocmd! Filetype vim set shiftwidth=2 tabstop=2
-
-fun! ApplyHtmlFtRules()
-  set filetype=xhtml
-"  autocmd FileType xml set omnifunc=xmlcomplete#CompleteTags noci
-"  autocmd FileType html set omnifunc=htmlcomplete#CompleteTags noci
-"  runtime vimfiles/bundle/xmledit/ftplugin/xml.vim
-endfunction
-
-fun! ApplyCommonCodingRules()
-  if (has('gui'))
-    call indent_guides#enable()
-    let g:indent_guides_auto_colors = 0
-    hi IndentGuidesEven guifg=yellow
-    hi IndentGuidesOdd guifg=yellow
-  else
-    call indent_guides#disable()
-  endif
-  "highlight phpRegion guibg=yellow guifg=yellow
-endfunction
 
 autocmd vimenter * call s:SetupSnippets()

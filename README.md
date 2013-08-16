@@ -52,6 +52,11 @@ This command should be executed in Vim.
         </th>
     </tr>
     <tr>
+        <td>,</td>
+        <td>Leader key</td>
+        <td>Mode independent</td>
+    </tr>
+    <tr>
         <td>
             Ctrl+k
         </td>
