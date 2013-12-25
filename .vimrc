@@ -356,17 +356,17 @@ let g:netrw_keepdir=0
 """"""""""""
 " zencoding
 """"""""""""
-let g:user_zen_settings = {
-\  'html' : {
-\    'indentation' : '  '
-\  },
-\}
-let g:use_zen_complete_tag=1
-let g:user_zen_expandabbr_key = '<c-l>'
-
-if exists('g:use_zen_complete_tag') && g:use_zen_complete_tag
-  setlocal completefunc=zencoding#CompleteTag
-endif
+"let g:user_zen_settings = {
+"\  'html' : {
+"\    'indentation' : '  '
+"\  },
+"\}
+"let g:use_zen_complete_tag=1
+"let g:user_zen_expandabbr_key = '<c-l>'
+"
+"if exists('g:use_zen_complete_tag') && g:use_zen_complete_tag
+"  setlocal completefunc=zencoding#CompleteTag
+"endif
 
 """"""""""""
 " lightline
