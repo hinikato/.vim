@@ -354,19 +354,21 @@ runtime macros/matchit.vim
 let g:netrw_keepdir=0
 
 """"""""""""
-" zencoding
+" emmet
 """"""""""""
-"let g:user_zen_settings = {
-"\  'html' : {
-"\    'indentation' : '  '
-"\  },
-"\}
-"let g:use_zen_complete_tag=1
-"let g:user_zen_expandabbr_key = '<c-l>'
-"
-"if exists('g:use_zen_complete_tag') && g:use_zen_complete_tag
-"  setlocal completefunc=zencoding#CompleteTag
-"endif
+
+let g:user_emmet_settings = {
+\  'html' : {
+\    'indentation' : '  '
+\  },
+\}
+let g:use_emmet_complete_tag = 1
+" Type html, then C-L -> <html></html>
+let g:user_emmet_expandabbr_key = '<c-l>'
+
+if exists('g:user_emmet_complete_tag') && g:user_emmet_complete_tag
+  setlocal omnifunc=emmet#completeTag
+endif
 
 """"""""""""
 " lightline
