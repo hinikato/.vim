@@ -22,7 +22,7 @@ call pathogen#infect()
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 function SetLineWrapWidth(width)
-  "set wrap
+  set wrap
   let &textwidth=a:width
   if exists('+colorcolumn')
     set colorcolumn=+1  " highlight next column after 'textwidth'
