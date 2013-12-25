@@ -129,6 +129,12 @@ set confirm
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 syntax on
+
+" Explicitly tell Vim that the terminal supports 256 colors
+" If you got the following error: "err: please use GUI or a 256-color terminal (so that t_Co=256 could be set)",
+" then add the following string: "export TERM='xterm-256color'" (without quotes) in your /etc/profile file.
+set t_Co=256
+
 if (!has('gui'))
   colorscheme xoria256
 else
@@ -157,10 +163,6 @@ set number
 set ruler
 set cmdheight=1
 set showmatch
-
-
-" Explicitly tell Vim that the terminal supports 256 colors
-set t_Co=256
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
