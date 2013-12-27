@@ -533,6 +533,7 @@ autocmd! BufNewFile,BufRead *.ts set filetype=typescript
 autocmd! BufNewFile,BufRead *.html,*htm,*.twig,*.latte call s:ApplyHtmlFtRules()
 autocmd! BufNewFile,BufRead *.markdown,*.md,*.mdown,*.mkd,*.mkdn,*.txt set filetype=markdown
 autocmd! BufNewFile,BufRead *.stg set filetype=stg
+autocmd! BufNewFile,BufRead *.flex set filetype=lex
 
 autocmd! BufEnter * silent! lcd %:p:h
 
