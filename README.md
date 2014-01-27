@@ -1,6 +1,5 @@
 1. Installation
-===============
-
+---------------
 
 ### 1.1. Linux
 
@@ -37,7 +36,7 @@ This command should be executed in Vim.
 
 
 2. Keys
-=======
+-------
 
 <table>
     <tr>
@@ -217,7 +216,7 @@ This command should be executed in Vim.
 
 
 3. Language switcher fix (Windows only)
-=======================================
+---------------------------------------
 
 In the bundle/myak/myak.vim there is the following block of code:
 
