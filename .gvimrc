@@ -19,15 +19,15 @@ fun! MyakTheme()
   colorscheme myak
 endf
 
-" Try to use the following command to see all available fonts:
+" To see all available fonts use the following command:
 " :set guifont=*
-
 if is_win
   call MyakTheme()
   ""call SolarizedTheme()
 else
 "  let g:maximize_use_winctrl = 1
   set guifont=Droid\ Sans\ Mono\ 9
+"  set guifont=DejaVu\ Sans\ Mono\ 9
 endif
 
 if has("menu")
