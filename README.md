@@ -249,17 +249,25 @@ This approach don't work for the Ctrl-[ combination, so additional fix must be a
 [AutoHotkey](http://www.autohotkey.com/) script:
 
 ```
-# If you don't need switch keyboard with Caps Lock just comment out
-# the next 3 lines below.
+; If you don't need switch keyboard with Caps Lock just comment out
+; the next 3 lines below.
 CapsLock::Send, {Alt Down}{Shift Down}{Shift Up}{Alt Up}
 return
+
 !CapsLock::CapsLock
 
-# The ^ means Ctrl
-# The :: means execute next command.
-^[::
-if WinActive("ahk_class Vim")
+; The $ prevents AutoHotkey from confusing sent keystrokes (via Send commands) with keypresses made by the user.
+; If we didn't put that, we would get an infinite loop,
+; see http://stackoverflow.com/questions/15840608/autohotkey-send-default-behavior-if-condition-not-met 
+; The ^ means Ctrl
+; The :: means execute next command.
+$^[::
+if WinActive("ahk_class Vim") {
     Send {Esc}
+} else {
+    Send ^[
+}
+
 return
 ```
 Just compile it with the Ahk2Exe.exe (it included in the AutoHotkey installation) and ensure that
