@@ -53,6 +53,8 @@ hi MoreMsg guifg=SeaGreen
 hi NonText guifg=SkyBlue guibg=grey20
 hi Question guifg=springgreen
 hi Search guibg=peru guifg=wheat
+
+" Color for the listchars (tab and trail).
 hi SpecialKey guifg=yellowgreen
 
 " Status line
