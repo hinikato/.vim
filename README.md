@@ -173,7 +173,7 @@ This command should be executed in Vim.
             F5
         </td>
         <td>
-            Run the python, php or dart with current file as argument.
+            Run the python, php, node or dart with current file as argument.
         </td>
         <td>
             Insert, Normal, Command-line

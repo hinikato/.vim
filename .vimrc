@@ -3,11 +3,13 @@
 " This must be first, because it changes other options as a side effect.
 set nocompatible
 
-let g:is_win = has('win32') || has('win64')
+let s:is_win = has('win32') || has('win64')
+let s:is_gui = has("gui_running")
 
-" To disable a plugin, add it's bundle name to the following list
+" To disable a plugin, add its bundle name to the following list
 let g:pathogen_disabled = []
-if g:is_win
+
+if s:is_win
   call add(g:pathogen_disabled, 'syntastic')
   source $VIM/vimfiles/bundle/pathogen/autoload/pathogen.vim
 else
@@ -41,7 +43,7 @@ function SetIndentWidth(numberOfSpaces)
 endfunction
 
 function! s:SetupSnippets()
-  if g:is_win
+  if s:is_win
     let snippets_dir_path = $VIM . "/vimfiles/bundle/myak/snippets"
   else
     let snippets_dir_path = "~/.vim/bundle/myak/snippets"
@@ -71,7 +73,7 @@ function! s:ApplyHtmlFtRules()
 endfunction
 
 function! s:ApplyCommonCodingRules()
-  if (has('gui'))
+  if s:is_gui
     call indent_guides#enable()
     let g:indent_guides_auto_colors = 0
     hi IndentGuidesEven guifg=yellow
@@ -79,7 +81,6 @@ function! s:ApplyCommonCodingRules()
   else
     call indent_guides#disable()
   endif
-  "highlight phpRegion guibg=yellow guifg=yellow
 endfunction
 
 
@@ -132,10 +133,10 @@ syntax on
 
 " Explicitly tell Vim that the terminal supports 256 colors
 " If you got the following error: "err: please use GUI or a 256-color terminal (so that t_Co=256 could be set)",
-" then add the following string: "export TERM='xterm-256color'" (without quotes) in your /etc/profile file.
+" then add the following string: "export TERM='xterm-256color'" (without quotes) in your .bashrc file.
 set t_Co=256
 
-if (!has('gui'))
+if (s:is_gui)
   colorscheme xoria256
 else
   colorscheme myak
@@ -271,7 +272,7 @@ noremap <silent> <F3> :call myak#normalize_spaces()<CR>
 vnoremap <silent> <F3> <C-C>:call myak#normalize_spaces()<CR>
 inoremap <silent> <F3> <C-\><C-O>:call myak#normalize_spaces()<CR>
 
-" Moving rows
+" Moving rows (author Skip)
 nmap <c-j> mz:m+<CR>`z==
 nmap <c-k> mz:m-2<CR>`z==
 imap <c-j> <Esc>:m+<CR>==gi
@@ -371,7 +372,6 @@ let g:user_emmet_expandabbr_key = '<c-l>'
 if exists('g:user_emmet_complete_tag') && g:user_emmet_complete_tag
   setlocal omnifunc=emmet#completeTag
 endif
-
 
 """""""""""
 " nerdtree
@@ -494,7 +494,6 @@ let g:indent_guides_enable_on_vim_startup=0
 " " let g:unite_source_grep_default_opts = '--no-heading --no-color -a'
 " " let g:unite_source_grep_recursive_opt = ''
 " endif
-
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " autocmd
