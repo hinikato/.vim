@@ -1,12 +1,12 @@
 " Fixed version of pathogen#helptags()
-function! myak#helptags() " {{{1
+function! myak#helptags()
   let sep = pathogen#separator()
   for dir in pathogen#split(&rtp)
     if filewritable(dir.sep.'doc') == 2 && !empty(filter(split(glob(dir.sep.'doc'.sep.'*'),"\n>"),'!isdirectory(v:val)')) && (!filereadable(dir.sep.'doc'.sep.'tags') || filewritable(dir.sep.'doc'.sep.'tags'))
       helptags `=dir.'/doc'`
     endif
   endfor
-endfunction " }}}1
+endfunction
 
 fun myak#is_win()
   return has('win32') || has('win64')

@@ -31,3 +31,6 @@
 [submodule "bundle/emmet"]
 	path = bundle/emmet
 	url = https://github.com/mattn/emmet-vim.git
+[submodule "bundle/clj"]
+	path = bundle/clj
+	url = https://github.com/mjwall/clj-vim
